@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Machine Learning Models (large binary files)
+*.pkl
+*.h5
+*.joblib
+models/*.pkl
+models/*.h5
+
+# Data files (if large - but keeping CSV for now)
+# Uncomment if your data files are too large:
+# data/*.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules (frontend)
+node_modules/
+
+# Logs
+*.log
+error_log.txt
+
+# Frontend build (if it's a separate git repo, it should be a submodule)
+# frontend/

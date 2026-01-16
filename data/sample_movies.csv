@@ -1,0 +1,101 @@
+imdb_id,title,year,genre,imdb_rating,metascore,runtime,director,actors,plot,language,country,imdb_votes
+tt0000001,Sample Movie 1,1992,"Thriller, Crime",8.6,76,121 min,Director 13,"Actor 23, Actor 43",A dramatic movie about interesting events.,English,USA,10597
+tt0000002,Sample Movie 2,1993,"Comedy, Romance",8.6,82,81 min,Director 1,"Actor 25, Actor 10",A action-packed movie about interesting events.,English,USA,9827
+tt0000003,Sample Movie 3,2010,"Thriller, Crime",6.5,72,167 min,Director 18,"Actor 37, Actor 20",A action-packed movie about interesting events.,English,USA,13881
+tt0000004,Sample Movie 4,1972,Sci-Fi,6.8,81,161 min,Director 8,"Actor 24, Actor 25",A action-packed movie about interesting events.,English,USA,23723
+tt0000005,Sample Movie 5,1995,"Action, Drama",7.2,95,132 min,Director 11,"Actor 28, Actor 42",A funny movie about interesting events.,English,USA,24998
+tt0000006,Sample Movie 6,1982,Action,8.7,54,90 min,Director 18,"Actor 27, Actor 12",A thrilling movie about interesting events.,English,USA,32894
+tt0000007,Sample Movie 7,1973,Action,8.5,58,160 min,Director 12,"Actor 34, Actor 2",A dramatic movie about interesting events.,English,USA,78511
+tt0000008,Sample Movie 8,1979,Drama,8.2,96,119 min,Director 2,"Actor 41, Actor 6",A funny movie about interesting events.,English,USA,17005
+tt0000009,Sample Movie 9,2007,Drama,9.1,44,130 min,Director 7,"Actor 34, Actor 9",A action-packed movie about interesting events.,English,USA,38456
+tt0000010,Sample Movie 10,1992,Drama,8.5,42,164 min,Director 5,"Actor 36, Actor 5",A funny movie about interesting events.,English,USA,92065
+tt0000011,Sample Movie 11,1980,"Thriller, Crime",5.4,67,139 min,Director 8,"Actor 39, Actor 16",A dramatic movie about interesting events.,English,USA,31092
+tt0000012,Sample Movie 12,1975,Comedy,8.5,62,87 min,Director 16,"Actor 24, Actor 21",A action-packed movie about interesting events.,English,USA,38090
+tt0000013,Sample Movie 13,1972,Sci-Fi,5.7,41,83 min,Director 1,"Actor 24, Actor 8",A thrilling movie about interesting events.,English,USA,26970
+tt0000014,Sample Movie 14,2001,Comedy,9.5,68,95 min,Director 6,"Actor 28, Actor 17",A thrilling movie about interesting events.,English,USA,1662
+tt0000015,Sample Movie 15,1983,Action,8.0,77,161 min,Director 7,"Actor 24, Actor 17",A action-packed movie about interesting events.,English,USA,96208
+tt0000016,Sample Movie 16,2013,"Thriller, Crime",6.6,75,164 min,Director 4,"Actor 30, Actor 14",A action-packed movie about interesting events.,English,USA,54148
+tt0000017,Sample Movie 17,1985,"Comedy, Romance",7.1,52,141 min,Director 17,"Actor 18, Actor 1",A funny movie about interesting events.,English,USA,23998
+tt0000018,Sample Movie 18,1990,Sci-Fi,6.6,64,164 min,Director 13,"Actor 9, Actor 48",A dramatic movie about interesting events.,English,USA,86874
+tt0000019,Sample Movie 19,1989,"Comedy, Romance",7.1,95,149 min,Director 13,"Actor 10, Actor 12",A funny movie about interesting events.,English,USA,46682
+tt0000020,Sample Movie 20,2015,Drama,6.1,76,126 min,Director 17,"Actor 29, Actor 4",A dramatic movie about interesting events.,English,USA,14426
+tt0000021,Sample Movie 21,2004,"Comedy, Romance",8.6,61,128 min,Director 9,"Actor 43, Actor 27",A funny movie about interesting events.,English,USA,91354
+tt0000022,Sample Movie 22,1985,Action,7.1,49,149 min,Director 14,"Actor 39, Actor 13",A thrilling movie about interesting events.,English,USA,11020
+tt0000023,Sample Movie 23,2011,Thriller,7.9,76,115 min,Director 1,"Actor 28, Actor 38",A funny movie about interesting events.,English,USA,93978
+tt0000024,Sample Movie 24,1992,"Action, Drama",5.1,91,117 min,Director 19,"Actor 31, Actor 36",A thrilling movie about interesting events.,English,USA,92439
+tt0000025,Sample Movie 25,2016,Romance,7.0,51,80 min,Director 14,"Actor 48, Actor 31",A thrilling movie about interesting events.,English,USA,7211
+tt0000026,Sample Movie 26,2002,Sci-Fi,7.6,55,126 min,Director 18,"Actor 19, Actor 33",A action-packed movie about interesting events.,English,USA,22299
+tt0000027,Sample Movie 27,1985,Comedy,8.7,48,86 min,Director 17,"Actor 8, Actor 37",A funny movie about interesting events.,English,USA,59967
+tt0000028,Sample Movie 28,1982,Action,7.2,90,118 min,Director 4,"Actor 49, Actor 28",A thrilling movie about interesting events.,English,USA,81212
+tt0000029,Sample Movie 29,1971,"Thriller, Crime",6.8,45,87 min,Director 6,"Actor 12, Actor 33",A dramatic movie about interesting events.,English,USA,21002
+tt0000030,Sample Movie 30,1984,Romance,8.4,55,174 min,Director 1,"Actor 4, Actor 30",A dramatic movie about interesting events.,English,USA,80111
+tt0000031,Sample Movie 31,1997,"Action, Drama",6.0,92,102 min,Director 19,"Actor 29, Actor 19",A dramatic movie about interesting events.,English,USA,82046
+tt0000032,Sample Movie 32,1984,Comedy,7.5,67,84 min,Director 9,"Actor 21, Actor 14",A action-packed movie about interesting events.,English,USA,68780
+tt0000033,Sample Movie 33,1985,Comedy,7.6,59,129 min,Director 16,"Actor 31, Actor 18",A dramatic movie about interesting events.,English,USA,7727
+tt0000034,Sample Movie 34,2019,Drama,9.2,99,110 min,Director 15,"Actor 39, Actor 41",A funny movie about interesting events.,English,USA,82277
+tt0000035,Sample Movie 35,1972,Romance,9.4,54,91 min,Director 9,"Actor 12, Actor 27",A funny movie about interesting events.,English,USA,33067
+tt0000036,Sample Movie 36,2014,Drama,8.4,89,115 min,Director 19,"Actor 22, Actor 44",A action-packed movie about interesting events.,English,USA,83886
+tt0000037,Sample Movie 37,2022,Comedy,5.8,77,138 min,Director 3,"Actor 16, Actor 18",A dramatic movie about interesting events.,English,USA,22324
+tt0000038,Sample Movie 38,1991,Romance,6.0,63,83 min,Director 5,"Actor 41, Actor 47",A dramatic movie about interesting events.,English,USA,62349
+tt0000039,Sample Movie 39,1973,Comedy,6.6,82,159 min,Director 19,"Actor 30, Actor 16",A dramatic movie about interesting events.,English,USA,48828
+tt0000040,Sample Movie 40,2017,Comedy,8.3,53,151 min,Director 2,"Actor 37, Actor 30",A funny movie about interesting events.,English,USA,2656
+tt0000041,Sample Movie 41,1980,Sci-Fi,9.2,80,96 min,Director 19,"Actor 6, Actor 19",A funny movie about interesting events.,English,USA,86637
+tt0000042,Sample Movie 42,1997,"Comedy, Romance",8.0,66,151 min,Director 3,"Actor 49, Actor 39",A funny movie about interesting events.,English,USA,84503
+tt0000043,Sample Movie 43,2017,Romance,6.8,42,152 min,Director 16,"Actor 12, Actor 24",A action-packed movie about interesting events.,English,USA,21039
+tt0000044,Sample Movie 44,1991,Comedy,9.0,89,114 min,Director 8,"Actor 5, Actor 29",A dramatic movie about interesting events.,English,USA,84853
+tt0000045,Sample Movie 45,2009,"Thriller, Crime",8.0,50,92 min,Director 7,"Actor 37, Actor 11",A thrilling movie about interesting events.,English,USA,60464
+tt0000046,Sample Movie 46,2003,Action,5.1,88,171 min,Director 9,"Actor 46, Actor 43",A action-packed movie about interesting events.,English,USA,88201
+tt0000047,Sample Movie 47,2008,Drama,7.6,58,168 min,Director 10,"Actor 14, Actor 35",A dramatic movie about interesting events.,English,USA,95952
+tt0000048,Sample Movie 48,1981,Thriller,6.8,72,137 min,Director 7,"Actor 6, Actor 29",A funny movie about interesting events.,English,USA,83325
+tt0000049,Sample Movie 49,1972,Action,8.8,62,147 min,Director 1,"Actor 1, Actor 14",A funny movie about interesting events.,English,USA,74709
+tt0000050,Sample Movie 50,2006,Romance,7.4,75,106 min,Director 19,"Actor 13, Actor 27",A thrilling movie about interesting events.,English,USA,84866
+tt0000051,Sample Movie 51,2011,"Thriller, Crime",6.5,61,132 min,Director 7,"Actor 49, Actor 37",A action-packed movie about interesting events.,English,USA,91290
+tt0000052,Sample Movie 52,2000,Drama,7.7,93,99 min,Director 16,"Actor 36, Actor 43",A funny movie about interesting events.,English,USA,49517
+tt0000053,Sample Movie 53,2011,Comedy,6.1,74,106 min,Director 17,"Actor 37, Actor 10",A thrilling movie about interesting events.,English,USA,66910
+tt0000054,Sample Movie 54,2020,"Comedy, Romance",7.6,47,88 min,Director 18,"Actor 42, Actor 42",A dramatic movie about interesting events.,English,USA,66713
+tt0000055,Sample Movie 55,2018,Comedy,7.3,45,179 min,Director 19,"Actor 14, Actor 24",A action-packed movie about interesting events.,English,USA,4912
+tt0000056,Sample Movie 56,1972,Thriller,7.6,57,172 min,Director 1,"Actor 29, Actor 32",A thrilling movie about interesting events.,English,USA,32543
+tt0000057,Sample Movie 57,1978,"Action, Drama",8.6,59,158 min,Director 1,"Actor 13, Actor 2",A dramatic movie about interesting events.,English,USA,71114
+tt0000058,Sample Movie 58,1988,Romance,7.3,97,118 min,Director 7,"Actor 39, Actor 40",A dramatic movie about interesting events.,English,USA,53608
+tt0000059,Sample Movie 59,1971,Thriller,9.1,51,88 min,Director 12,"Actor 12, Actor 11",A dramatic movie about interesting events.,English,USA,13788
+tt0000060,Sample Movie 60,2017,"Action, Drama",5.7,71,144 min,Director 6,"Actor 35, Actor 29",A dramatic movie about interesting events.,English,USA,78207
+tt0000061,Sample Movie 61,1980,Action,7.5,71,121 min,Director 9,"Actor 48, Actor 41",A funny movie about interesting events.,English,USA,93540
+tt0000062,Sample Movie 62,2008,Comedy,6.3,53,109 min,Director 12,"Actor 11, Actor 28",A funny movie about interesting events.,English,USA,63255
+tt0000063,Sample Movie 63,2006,"Thriller, Crime",6.6,60,86 min,Director 12,"Actor 28, Actor 6",A action-packed movie about interesting events.,English,USA,2164
+tt0000064,Sample Movie 64,1977,"Comedy, Romance",7.8,42,136 min,Director 4,"Actor 10, Actor 14",A thrilling movie about interesting events.,English,USA,49573
+tt0000065,Sample Movie 65,1999,Action,8.5,73,166 min,Director 18,"Actor 14, Actor 12",A thrilling movie about interesting events.,English,USA,11073
+tt0000066,Sample Movie 66,1982,"Thriller, Crime",7.1,77,156 min,Director 14,"Actor 11, Actor 11",A dramatic movie about interesting events.,English,USA,52213
+tt0000067,Sample Movie 67,1973,Sci-Fi,8.4,62,124 min,Director 1,"Actor 41, Actor 10",A dramatic movie about interesting events.,English,USA,38911
+tt0000068,Sample Movie 68,1974,"Action, Drama",9.1,62,155 min,Director 1,"Actor 22, Actor 4",A dramatic movie about interesting events.,English,USA,34515
+tt0000069,Sample Movie 69,1976,"Comedy, Romance",8.9,84,82 min,Director 18,"Actor 22, Actor 1",A action-packed movie about interesting events.,English,USA,89574
+tt0000070,Sample Movie 70,1974,"Thriller, Crime",6.9,69,132 min,Director 19,"Actor 11, Actor 33",A dramatic movie about interesting events.,English,USA,64754
+tt0000071,Sample Movie 71,2013,"Action, Drama",8.8,80,88 min,Director 3,"Actor 24, Actor 27",A thrilling movie about interesting events.,English,USA,36408
+tt0000072,Sample Movie 72,1981,Thriller,9.2,87,95 min,Director 8,"Actor 1, Actor 41",A action-packed movie about interesting events.,English,USA,82894
+tt0000073,Sample Movie 73,2022,Drama,8.5,61,90 min,Director 6,"Actor 35, Actor 5",A thrilling movie about interesting events.,English,USA,46359
+tt0000074,Sample Movie 74,2011,Thriller,7.2,54,174 min,Director 12,"Actor 14, Actor 23",A thrilling movie about interesting events.,English,USA,52304
+tt0000075,Sample Movie 75,1978,Sci-Fi,6.0,70,81 min,Director 16,"Actor 3, Actor 11",A action-packed movie about interesting events.,English,USA,90695
+tt0000076,Sample Movie 76,2022,"Action, Drama",7.5,65,101 min,Director 14,"Actor 18, Actor 17",A thrilling movie about interesting events.,English,USA,71040
+tt0000077,Sample Movie 77,2022,Drama,6.4,53,103 min,Director 12,"Actor 13, Actor 40",A action-packed movie about interesting events.,English,USA,84830
+tt0000078,Sample Movie 78,2017,Action,7.2,66,107 min,Director 9,"Actor 28, Actor 9",A funny movie about interesting events.,English,USA,38438
+tt0000079,Sample Movie 79,1986,"Comedy, Romance",6.6,84,171 min,Director 16,"Actor 10, Actor 37",A dramatic movie about interesting events.,English,USA,44836
+tt0000080,Sample Movie 80,2021,Sci-Fi,8.6,60,80 min,Director 3,"Actor 8, Actor 25",A dramatic movie about interesting events.,English,USA,91054
+tt0000081,Sample Movie 81,2004,"Comedy, Romance",8.9,40,106 min,Director 17,"Actor 47, Actor 6",A action-packed movie about interesting events.,English,USA,28717
+tt0000082,Sample Movie 82,1978,Romance,7.0,41,168 min,Director 18,"Actor 27, Actor 44",A dramatic movie about interesting events.,English,USA,38803
+tt0000083,Sample Movie 83,2023,Drama,7.1,53,103 min,Director 7,"Actor 43, Actor 17",A funny movie about interesting events.,English,USA,81962
+tt0000084,Sample Movie 84,1985,Romance,7.4,52,173 min,Director 8,"Actor 46, Actor 46",A action-packed movie about interesting events.,English,USA,9431
+tt0000085,Sample Movie 85,2012,Thriller,7.5,88,144 min,Director 1,"Actor 42, Actor 29",A action-packed movie about interesting events.,English,USA,52454
+tt0000086,Sample Movie 86,1975,Thriller,8.9,80,118 min,Director 9,"Actor 36, Actor 44",A dramatic movie about interesting events.,English,USA,82009
+tt0000087,Sample Movie 87,1984,Thriller,5.4,44,141 min,Director 5,"Actor 39, Actor 24",A funny movie about interesting events.,English,USA,32569
+tt0000088,Sample Movie 88,1984,"Comedy, Romance",6.0,69,173 min,Director 8,"Actor 5, Actor 30",A funny movie about interesting events.,English,USA,45962
+tt0000089,Sample Movie 89,2021,Drama,8.5,99,113 min,Director 4,"Actor 49, Actor 14",A funny movie about interesting events.,English,USA,67794
+tt0000090,Sample Movie 90,2015,Thriller,8.3,55,112 min,Director 11,"Actor 8, Actor 11",A dramatic movie about interesting events.,English,USA,97985
+tt0000091,Sample Movie 91,1998,Romance,9.4,66,90 min,Director 4,"Actor 32, Actor 17",A funny movie about interesting events.,English,USA,21889
+tt0000092,Sample Movie 92,1990,Thriller,5.4,53,135 min,Director 11,"Actor 43, Actor 11",A thrilling movie about interesting events.,English,USA,13536
+tt0000093,Sample Movie 93,1984,"Action, Drama",7.3,85,89 min,Director 6,"Actor 30, Actor 21",A dramatic movie about interesting events.,English,USA,93644
+tt0000094,Sample Movie 94,1991,Sci-Fi,8.2,91,126 min,Director 1,"Actor 12, Actor 7",A thrilling movie about interesting events.,English,USA,68202
+tt0000095,Sample Movie 95,1986,"Action, Drama",9.2,57,151 min,Director 11,"Actor 39, Actor 29",A thrilling movie about interesting events.,English,USA,75970
+tt0000096,Sample Movie 96,2010,Drama,5.1,69,149 min,Director 18,"Actor 36, Actor 12",A thrilling movie about interesting events.,English,USA,48050
+tt0000097,Sample Movie 97,2005,"Comedy, Romance",9.4,43,102 min,Director 16,"Actor 19, Actor 26",A thrilling movie about interesting events.,English,USA,20601
+tt0000098,Sample Movie 98,2017,Drama,8.3,43,159 min,Director 10,"Actor 5, Actor 23",A action-packed movie about interesting events.,English,USA,82886
+tt0000099,Sample Movie 99,2015,Thriller,6.9,91,171 min,Director 13,"Actor 11, Actor 17",A action-packed movie about interesting events.,English,USA,64319
+tt0000100,Sample Movie 100,2000,"Comedy, Romance",7.2,40,161 min,Director 4,"Actor 8, Actor 6",A funny movie about interesting events.,English,USA,62558
