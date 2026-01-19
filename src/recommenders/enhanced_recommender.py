@@ -203,7 +203,7 @@ class EnhancedRecommender:
         
         return recommendations
     
-    def get_categorized_recommendations(self, movie_id: str, n_per_category: int = 10) -> Dict:
+    def get_categorized_recommendations(self, movie_id: str, n_per_category: int = 10) -> Dict[str, List]:
         """
         Get categorized recommendations for a movie.
         
@@ -215,8 +215,88 @@ class EnhancedRecommender:
             Dictionary with categorized recommendations
         """
         return {
-            'similar_genre': self.get_similar_genre(movie_id, n_per_category),
-            'same_director': self.get_same_director(movie_id, n_per_category),
-            'popular_that_year': self.get_popular_that_year(movie_id, n_per_category),
-            'similar_content': self.get_similar_content(movie_id, n_per_category)
+            'similar_genre': self.get_similar_genre(movie_id, n=n_per_category),
+            'same_director': self.get_same_director(movie_id, n=n_per_category),
+            'popular_that_year': self.get_popular_that_year(movie_id, n=n_per_category),
+            'similar_content': self.get_similar_content(movie_id, n=n_per_category)
+        }
+    
+    def get_movies_by_actor(self, actor_name: str, n: int = 20) -> List[Tuple[str, float]]:
+        """
+        Get all movies featuring a specific actor.
+        
+        Args:
+            actor_name: Name of the actor (case-insensitive)
+            n: Maximum number of movies to return
+            
+        Returns:
+            List of (movie_id, rating) tuples sorted by rating
+        """
+        if 'cast' not in self.movies_df.columns:
+            print("Warning: Cast information not available in dataset")
+            return []
+        
+        # Normalize actor name for comparison
+        actor_name_lower = actor_name.lower().strip()
+        
+        # Filter movies where this actor appears in the cast
+        matching_movies = []
+        for idx, row in self.movies_df.iterrows():
+            cast = row.get('cast', '')
+            if pd.notna(cast):
+                # Split cast string and normalize each name
+                cast_list = [name.strip().lower() for name in str(cast).split(',')]
+                if actor_name_lower in cast_list:
+                    movie_id = row[self.movies_df.columns[0]]
+                    rating = row.get('vote_average', row.get('imdb_rating', 0))
+                    matching_movies.append((movie_id, float(rating) if pd.notna(rating) else 0))
+        
+        # Sort by rating (descending)
+        matching_movies.sort(key=lambda x: x[1], reverse=True)
+        
+        return matching_movies[:n]
+    
+    def get_actor_info(self, actor_name: str) -> Dict:
+        """
+        Get information about an actor based on their filmography.
+        
+        Args:
+            actor_name: Name of the actor
+            
+        Returns:
+            Dictionary with actor statistics and filmography
+        """
+        movies = self.get_movies_by_actor(actor_name, n=100)  # Get all movies
+        
+        if not movies:
+            return {
+                'actor_name': actor_name,
+                'total_movies': 0,
+                'average_rating': 0,
+                'top_movies': []
+            }
+        
+        # Calculate statistics
+        ratings = [rating for _, rating in movies]
+        avg_rating = sum(ratings) / len(ratings) if ratings else 0
+        
+        # Get top 5 movies
+        top_movies = []
+        for movie_id, rating in movies[:5]:
+            movie_info = self.get_movie_info(movie_id)
+            if movie_info:
+                top_movies.append({
+                    'movie_id': movie_id,
+                    'title': movie_info['title'],
+                    'rating': rating,
+                    'year': movie_info.get('year', 'N/A'),
+                    'genre': movie_info.get('genre', 'N/A')
+                })
+        
+        return {
+            'actor_name': actor_name,
+            'total_movies': len(movies),
+            'average_rating': round(avg_rating, 2),
+            'top_movies': top_movies,
+            'all_movie_ids': [movie_id for movie_id, _ in movies]
         }
