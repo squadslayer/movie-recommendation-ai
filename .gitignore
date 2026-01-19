@@ -23,9 +23,16 @@ ENV/
 models/*.pkl
 models/*.h5
 
-# Data files (if large - but keeping CSV for now)
-# Uncomment if your data files are too large:
-# data/*.csv
+# Data files - Enriched data and checkpoints
+data/movies_enriched.csv
+data/movies_enriched_checkpoint.csv
+data/*.checkpoint.csv
+
+# Original dataset - keep for reproducibility (comment out if too large)
+# data/tmdb_top_rated_movies.csv
+
+# Artifact directory (Gemini brain files)
+.gemini/
 
 # IDE
 .vscode/
@@ -44,6 +51,11 @@ node_modules/
 # Logs
 *.log
 error_log.txt
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
 
 # Frontend build (if it's a separate git repo, it should be a submodule)
 # frontend/

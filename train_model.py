@@ -101,9 +101,13 @@ print(f"  Genre: {sample_movie_info['genre']}")
 print()
 
 # Get predictions
-similar_movies = loaded_recommender.get_similar_movies(sample_movie_id, n=5)
-
-print("✅ Top 5 predictions:")
+try:
+    similar_movies = loaded_recommender.get_similar_content(sample_movie_id, n=5)
+    print("✅ Top 5 predictions (Content Similarity):")
+except AttributeError:
+    # Fallback if method name is different
+    similar_movies = loaded_recommender.get_recommendations(sample_movie_id, n=5)
+    print("✅ Top 5 predictions:")
 for i, (movie_id, score) in enumerate(similar_movies, 1):
     info = loaded_recommender.get_movie_info(movie_id)
     print(f"   {i}. {info['title']} (Score: {score:.3f})")

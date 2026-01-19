@@ -64,7 +64,11 @@ class MovieDataProcessor:
         
         if 'director' in df_clean.columns:
             df_clean['director'] = df_clean['director'].fillna('Unknown')
-        if 'actors' in df_clean.columns:
+        
+        # Handle actors (map from 'cast' if present)
+        if 'cast' in df_clean.columns:
+            df_clean['actors'] = df_clean['cast'].fillna('Unknown')
+        elif 'actors' in df_clean.columns:
             df_clean['actors'] = df_clean['actors'].fillna('Unknown')
         
         # Clean and convert year
@@ -84,17 +88,20 @@ class MovieDataProcessor:
         if 'metascore' in df_clean.columns:
             df_clean['metascore'] = pd.to_numeric(df_clean['metascore'], errors='coerce')
         
-        # Fill missing ratings with median
-        if 'imdb_rating' in df_clean.columns:
+        # Fill missing ratings with median (safely)
+        if 'imdb_rating' in df_clean.columns and not df_clean['imdb_rating'].isna().all():
             df_clean['imdb_rating'] = df_clean['imdb_rating'].fillna(df_clean['imdb_rating'].median())
-        if 'metascore' in df_clean.columns:
+        elif 'imdb_rating' in df_clean.columns:
+             df_clean['imdb_rating'] = df_clean['imdb_rating'].fillna(0) # Fallback for all-NaN
+
+        if 'metascore' in df_clean.columns and not df_clean['metascore'].isna().all():
             df_clean['metascore'] = df_clean['metascore'].fillna(df_clean['metascore'].median())
         
         # Clean runtime (optional column)
         if 'runtime' in df_clean.columns:
             df_clean['runtime_minutes'] = df_clean['runtime'].apply(self._extract_runtime)
         else:
-            df_clean['runtime_minutes'] = None
+            df_clean['runtime_minutes'] = None # Will be handled safely in normalization
         
         # Clean votes (optional column)
         if 'imdb_votes' in df_clean.columns:
@@ -205,9 +212,17 @@ class MovieDataProcessor:
         
         # Normalize numerical features
         numerical_features = ['imdb_rating', 'metascore', 'runtime_minutes', 'year']
-        available_features = [f for f in numerical_features if f in df_features.columns]
+        available_features = []
+        
+        # Verify columns exist and are not all-NaN before attempting normalization
+        for f in numerical_features:
+            if f in df_features.columns:
+                # Check if column has valid data (not all NaN)
+                if not df_features[f].isna().all():
+                     available_features.append(f)
         
         if available_features:
+            # Fill NaNs with median for available features
             df_features[available_features] = df_features[available_features].fillna(
                 df_features[available_features].median()
             )
