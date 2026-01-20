@@ -331,7 +331,7 @@ if __name__ == "__main__":
         if image_url:
             print(f"✅ Image URL: {image_url}")
         else:
-            print(f"❌ No image found")
+            print("❌ No image found")
     
     print("\n" + "=" * 70)
     print("\nMethod 2: Pywikibot approach (requires pywikibot installation)")

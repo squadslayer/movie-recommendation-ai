@@ -5,6 +5,7 @@ Integrates with Wikipedia for actor images
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import pandas as pd
 import pickle
 import sys
 import os
@@ -206,9 +207,9 @@ def get_movie_cast(movie_id):
         cast_list = []
         idx = recommender.movie_to_idx.get(movie_id)
         if idx is not None:
-             cast_string = recommender.movies_df.iloc[idx].get('cast', '')
-             if cast_string and pd.notna(cast_string) and cast_string != 'Unknown':
-                 cast_list = [name.strip() for name in str(cast_string).split(',')]
+            cast_string = recommender.movies_df.iloc[idx].get('cast', '')
+            if cast_string and pd.notna(cast_string) and cast_string != 'Unknown':
+                cast_list = [name.strip() for name in str(cast_string).split(',')]
         
         return jsonify({
             'movie_id': movie_id,
