@@ -1,5 +1,4 @@
 import requests
-import json
 
 def test_endpoint(url):
     print(f"Testing {url}...")
@@ -15,17 +14,18 @@ def test_endpoint(url):
         print(f"Error: {e}")
     return False
 
-print("="*50)
-print("VERIFYING BACKEND API")
-print("="*50)
+if __name__ == "__main__":
+    print("="*50)
+    print("VERIFYING BACKEND API")
+    print("="*50)
 
-# 1. Health Check
-ok1 = test_endpoint("http://localhost:5000/api/health")
+    # 1. Health Check
+    ok1 = test_endpoint("http://localhost:5000/api/health")
 
-# 2. Artist Search (Tom Cruise) - Case sensitive?
-ok2 = test_endpoint("http://localhost:5000/api/actors/Tom%20Cruise/info")
+    # 2. Artist Search (Tom Cruise) - Case sensitive?
+    ok2 = test_endpoint("http://localhost:5000/api/actors/Tom%20Cruise/info")
 
-if ok1 and ok2:
-    print("\n✅ API IS WORKING CORRECTLY!")
-else:
-    print("\n❌ API ISSUES DETECTED")
+    if ok1 and ok2:
+        print("\n✅ API IS WORKING CORRECTLY!")
+    else:
+        print("\n❌ API ISSUES DETECTED")

@@ -6,6 +6,7 @@ Provides recommendations based on genre, director, year, and content similarity.
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import logging
 from typing import List, Tuple, Dict, Optional
 
 
@@ -233,23 +234,28 @@ class EnhancedRecommender:
             List of (movie_id, rating) tuples sorted by rating
         """
         if 'cast' not in self.movies_df.columns:
-            print("Warning: Cast information not available in dataset")
+            logging.warning("Cast information not available in dataset")
             return []
         
         # Normalize actor name for comparison
         actor_name_lower = actor_name.lower().strip()
         
-        # Filter movies where this actor appears in the cast
-        matching_movies = []
-        for idx, row in self.movies_df.iterrows():
-            cast = row.get('cast', '')
-            if pd.notna(cast):
-                # Split cast string and normalize each name
-                cast_list = [name.strip().lower() for name in str(cast).split(',')]
-                if actor_name_lower in cast_list:
-                    movie_id = row[self.movies_df.columns[0]]
-                    rating = row.get('vote_average', row.get('imdb_rating', 0))
-                    matching_movies.append((movie_id, float(rating) if pd.notna(rating) else 0))
+        # Vectorized filtering
+        df = self.movies_df.copy()
+        df['cast_lower'] = df['cast'].fillna('').astype(str).str.lower()
+        
+        # Filter rows where actor appears in cast
+        mask = df['cast_lower'].apply(
+            lambda cast: actor_name_lower in [n.strip() for n in cast.split(',')]
+        )
+        filtered = df[mask]
+        
+        # Extract movie_id and rating
+        movie_id_col = self.movies_df.columns[0]
+        matching_movies = [
+            (row[movie_id_col], float(row.get('vote_average', row.get('imdb_rating', 0)) or 0)) 
+            for _, row in filtered.iterrows()
+        ]
         
         # Sort by rating (descending)
         matching_movies.sort(key=lambda x: x[1], reverse=True)

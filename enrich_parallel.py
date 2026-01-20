@@ -34,11 +34,11 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-print(f"DEBUG: API_KEY = {API_KEY[:10] if API_KEY else 'NOT FOUND'}...")
+print(f"DEBUG: API_KEY = {'SET' if API_KEY else 'NOT FOUND'}")
 print(f"Configuration: Workers={MAX_WORKERS}, BatchSize={BATCH_SIZE}, Debug={DEBUG_MODE}")
 
 # Thread-safe DataFrame lock
-df_lock = Lock()
+
 
 # Create session with connection pooling for each thread
 import threading
@@ -98,7 +98,7 @@ def search_movie(title, year=None, retries=3):
             if attempt < retries - 1:
                 time.sleep(0.5)
             else:
-                logger.error(f"Error searching '{title}': {e}")
+                logger.exception(f"Error searching '{title}'")
                 return None
 
 
@@ -120,7 +120,7 @@ def get_movie_details(movie_id, retries=3):
             if attempt < retries - 1:
                 time.sleep(0.5)
             else:
-                logger.error(f"Error getting details for ID {movie_id}: {e}")
+                logger.exception(f"Error getting details for ID {movie_id}")
                 return {}
 
 
@@ -362,12 +362,15 @@ def enrich_movies(limit=None, checkpoint_interval=100):
         logger.info(f"ETA: ~{eta_minutes:.1f} minutes remaining")
     
     # Final save
-    df.to_csv(enriched_file, index=False)
-    logger.info(f"\n{'='*60}")
-    logger.info(f"✅ ENRICHMENT COMPLETE!")
+    # Final save
+    if total_enriched % checkpoint_interval != 0:
+        df.to_csv(enriched_file, index=False)
+        
+    logger.info("\n" + "="*60)
+    logger.info("✅ ENRICHMENT COMPLETE!")
     logger.info(f"Total enriched: {total_enriched} movies")
     logger.info(f"Output: {enriched_file}")
-    logger.info(f"{'='*60}")
+    logger.info("="*60)
     
     return df
 

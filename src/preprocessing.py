@@ -92,7 +92,7 @@ class MovieDataProcessor:
         if 'imdb_rating' in df_clean.columns and not df_clean['imdb_rating'].isna().all():
             df_clean['imdb_rating'] = df_clean['imdb_rating'].fillna(df_clean['imdb_rating'].median())
         elif 'imdb_rating' in df_clean.columns:
-             df_clean['imdb_rating'] = df_clean['imdb_rating'].fillna(0) # Fallback for all-NaN
+            df_clean['imdb_rating'] = df_clean['imdb_rating'].fillna(0) # Fallback for all-NaN
 
         if 'metascore' in df_clean.columns and not df_clean['metascore'].isna().all():
             df_clean['metascore'] = df_clean['metascore'].fillna(df_clean['metascore'].median())
@@ -219,7 +219,7 @@ class MovieDataProcessor:
             if f in df_features.columns:
                 # Check if column has valid data (not all NaN)
                 if not df_features[f].isna().all():
-                     available_features.append(f)
+                    available_features.append(f)
         
         if available_features:
             # Fill NaNs with median for available features

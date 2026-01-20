@@ -87,7 +87,7 @@ def main():
         if recs['similar_content']:
             for mid, score in recs['similar_content']:
                 m = recommender.get_movie_info(mid)
-                print(f"   - {m['title']} ({m.get('year', 'N/A')})")
+                print(f"   - {m['title']} ({m.get('year', 'N/A')}) [score: {score:.2f}]")
         else:
             print("   (No recommendations found)")
 
@@ -96,7 +96,7 @@ def main():
         if recs['similar_genre']:
             for mid, score in recs['similar_genre']:
                 m = recommender.get_movie_info(mid)
-                print(f"   - {m['title']} ({m.get('year', 'N/A')})")
+                print(f"   - {m['title']} ({m.get('year', 'N/A')}) [score: {score:.2f}]")
         else:
             print("   (No recommendations found)")
 
@@ -106,7 +106,7 @@ def main():
         if recs['same_director']:
             for mid, score in recs['same_director']:
                 m = recommender.get_movie_info(mid)
-                print(f"   - {m['title']} ({m.get('year', 'N/A')})")
+                print(f"   - {m['title']} ({m.get('year', 'N/A')}) [rating: {score:.1f}]")
         else:
             print("   (No other movies by this director in database)")
 
@@ -116,9 +116,9 @@ def main():
         if recs['popular_that_year']:
             for mid, score in recs['popular_that_year']:
                 m = recommender.get_movie_info(mid)
-                print(f"   - {m['title']}")
+                print(f"   - {m['title']} [rating: {score:.1f}]")
         else:
-             print("   (No recommendations found)")
+            print("   (No recommendations found)")
 
 if __name__ == "__main__":
     main()

@@ -31,7 +31,7 @@ class WikipediaActorImageFetcher:
         self.site = pywikibot.Site(language, 'wikipedia')
         self.commons = pywikibot.Site('commons', 'commons')
     
-    def get_actor_page(self, actor_name: str) -> Optional[pywikibot.Page]:
+    def get_actor_page(self, actor_name: str) -> Optional['pywikibot.Page']:
         """
         Get Wikipedia page for an actor.
         
@@ -59,7 +59,7 @@ class WikipediaActorImageFetcher:
             print(f"Error finding page for {actor_name}: {e}")
             return None
     
-    def _is_person_page(self, page: pywikibot.Page) -> bool:
+    def _is_person_page(self, page: 'pywikibot.Page') -> bool:
         """Check if page is about a person."""
         # Check if page has infobox for person/actor
         text = page.text.lower()
@@ -234,7 +234,7 @@ def get_actor_image_simple(actor_name: str) -> Optional[str]:
         data = response.json()
         
         pages = data.get('query', {}).get('pages', {})
-        for page_id, page_data in pages.items():
+        for _page_id, page_data in pages.items():
             if 'thumbnail' in page_data:
                 return page_data['thumbnail']['source']
         
@@ -244,51 +244,6 @@ def get_actor_image_simple(actor_name: str) -> Optional[str]:
         print(f"Error fetching image for {actor_name}: {e}")
         return None
 
-
-if __name__ == "__main__":
-    # Demo usage
-    print("=" * 70)
-    print("WIKIPEDIA ACTOR IMAGE FETCHER - DEMO")
-    print("=" * 70)
-    print()
-    
-    # Test actors
-    test_actors = [
-        "Leonardo DiCaprio",
-        "Tom Hanks",
-        "Meryl Streep"
-    ]
-    
-    print("Method 1: Simple API approach (no pywikibot needed)")
-    print("-" * 70)
-    for actor in test_actors:
-        print(f"\nFetching image for: {actor}")
-        image_url = get_actor_image_simple(actor)
-        if image_url:
-            print(f"✅ Image URL: {image_url}")
-        else:
-            print(f"❌ No image found")
-    
-    print("\n" + "=" * 70)
-    print("\nMethod 2: Pywikibot approach (requires pywikibot installation)")
-    print("-" * 70)
-    
-    if PYWIKIBOT_AVAILABLE:
-        for actor in test_actors:
-            print(f"\nFetching info for: {actor}")
-            info = get_actor_info_simple(actor)
-            print(f"Name: {info.get('name')}")
-            print(f"Image: {info.get('image_url', 'Not found')}")
-    else:
-        print("Pywikibot not installed. Run: pip install pywikibot")
-    
-    print("\n" + "=" * 70)
-    print("\nRECOMMENDATION:")
-    print("Use the SIMPLE API method (get_actor_image_simple)")
-    print("- No additional dependencies")
-    print("- Faster and more reliable")
-    print("- Uses Wikipedia's public API")
-    print("=" * 70)
 
 
 def get_actor_info_simple(actor_name: str) -> Dict[str, str]:
@@ -338,7 +293,7 @@ def get_actor_info_simple(actor_name: str) -> Dict[str, str]:
         data = response.json()
         
         pages = data.get('query', {}).get('pages', {})
-        for page_id, page_data in pages.items():
+        for _page_id, page_data in pages.items():
             return {
                 'name': actor_name,
                 'page_title': page_data.get('title'),
@@ -352,3 +307,52 @@ def get_actor_info_simple(actor_name: str) -> Dict[str, str]:
     except Exception as e:
         print(f"Error: {e}")
         return {'name': actor_name, 'image_url': None}
+
+
+if __name__ == "__main__":
+    # Demo usage
+    print("=" * 70)
+    print("WIKIPEDIA ACTOR IMAGE FETCHER - DEMO")
+    print("=" * 70)
+    print()
+    
+    # Test actors
+    test_actors = [
+        "Leonardo DiCaprio",
+        "Tom Hanks",
+        "Meryl Streep"
+    ]
+    
+    print("Method 1: Simple API approach (no pywikibot needed)")
+    print("-" * 70)
+    for actor in test_actors:
+        print(f"\nFetching image for: {actor}")
+        image_url = get_actor_image_simple(actor)
+        if image_url:
+            print(f"✅ Image URL: {image_url}")
+        else:
+            print("❌ No image found")
+    
+    print("\n" + "=" * 70)
+    print("\nMethod 2: Pywikibot approach (requires pywikibot installation)")
+    print("-" * 70)
+    
+    if PYWIKIBOT_AVAILABLE:
+        for actor in test_actors:
+            print(f"\nFetching info for: {actor}")
+            info = get_actor_info_simple(actor)
+            print(f"Name: {info.get('name')}")
+            print(f"Image: {info.get('image_url', 'Not found')}")
+    else:
+        print("Pywikibot not installed. Run: pip install pywikibot")
+    
+    print("\n" + "=" * 70)
+    print("\nRECOMMENDATION:")
+    print("Use the SIMPLE API method (get_actor_image_simple)")
+    print("- No additional dependencies")
+    print("- Faster and more reliable")
+    print("- Uses Wikipedia's public API")
+    print("=" * 70)
+
+
+
