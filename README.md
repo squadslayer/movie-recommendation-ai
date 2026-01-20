@@ -61,8 +61,6 @@ pip install -r requirements.txt
 # Run parallel enrichment (faster - recommended)
 python enrich_parallel.py
 
-# OR run sequential enrichment
-python enrich.py
 ```
 
 This will:
@@ -106,7 +104,7 @@ Then access:
 
 ## Project Structure
 
-```
+```text
 movie-recommender/
 ├── data/
 │   ├── tmdb_top_rated_movies.csv      # Original dataset (10K movies)
@@ -180,7 +178,8 @@ for movie_id, rating in recommendations['same_director']:
 
 # Popular that year
 for movie_id, rating in recommendations['popular_that_year']:
-    print(f"Popular in {year}: {recommender.get_movie_info(movie_id)['title']}")
+    info = recommender.get_movie_info(movie_id)
+    print(f"Popular in {info['year']}: {info['title']}")
 
 # Content similarity
 for movie_id, score in recommendations['similar_content']:
@@ -253,7 +252,7 @@ All dependencies are already installed in the virtual environment:
 ## Documentation
 
 - [Quick Start Guide](QUICK_START.md) - Detailed usage instructions
-- [Walkthrough](C:\Users\Krishna Sharma\.gemini\antigravity\brain\3f69bd5d-3e87-4a1a-9480-9043a0675b3e\walkthrough.md) - Implementation details
+- [Walkthrough](docs/walkthrough.md) - Implementation details
 
 ## Next Steps
 
@@ -291,7 +290,7 @@ All dependencies are already installed in the virtual environment:
 - **Connection Error Rate**: <1% (with retry strategy)
 - **Throughput**: ~7-8 movies per second
 
-## Next Steps
+## Future Roadmap
 
 1. **Frontend Integration**: Connect React app to backend API
 2. **Actor UI**: Implement clickable actor names with photo modals

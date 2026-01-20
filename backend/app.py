@@ -10,6 +10,7 @@ import sys
 import os
 from dotenv import load_dotenv
 import requests
+from functools import lru_cache
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -39,12 +40,9 @@ except Exception as e:
     recommender = None
 
 # Simple in-memory cache for posters to avoid hitting rate limits
-poster_cache = {}
-
+@lru_cache(maxsize=1000)
 def get_movie_poster(movie_id):
     """Fetch movie poster URL from TMDB"""
-    if movie_id in poster_cache:
-        return poster_cache[movie_id]
         
     try:
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
@@ -53,9 +51,7 @@ def get_movie_poster(movie_id):
             data = response.json()
             poster_path = data.get('poster_path')
             if poster_path:
-                full_url = f"https://image.tmdb.org/t/p/w200{poster_path}"
-                poster_cache[movie_id] = full_url
-                return full_url
+                return f"https://image.tmdb.org/t/p/w200{poster_path}"
     except Exception as e:
         print(f"Error fetching poster for {movie_id}: {e}")
         
@@ -206,11 +202,13 @@ def get_movie_cast(movie_id):
             return jsonify({'error': 'Movie not found'}), 404
         
         # Parse cast from comma-separated string
-        cast_string = movie_info.get('cast', '')
-        if cast_string and cast_string != 'Unknown':
-            cast_list = [name.strip() for name in str(cast_string).split(',')]
-        else:
-            cast_list = []
+        # Parse cast from recommender DataFrame (since get_movie_info doesn't return cast)
+        cast_list = []
+        idx = recommender.movie_to_idx.get(movie_id)
+        if idx is not None:
+             cast_string = recommender.movies_df.iloc[idx].get('cast', '')
+             if cast_string and pd.notna(cast_string) and cast_string != 'Unknown':
+                 cast_list = [name.strip() for name in str(cast_string).split(',')]
         
         return jsonify({
             'movie_id': movie_id,
@@ -242,11 +240,11 @@ def get_categorized_recommendations(movie_id):
         formatted = {}
         for category, movies in recommendations.items():
             formatted[category] = []
-            for movie_id, score in movies:
-                info = recommender.get_movie_info(movie_id)
+            for rec_movie_id, score in movies:
+                info = recommender.get_movie_info(rec_movie_id)
                 if info:
                     formatted[category].append({
-                        'id': movie_id,
+                        'id': rec_movie_id,
                         'title': info['title'],
                         'year': info.get('year'),
                         'rating': info.get('rating'),
@@ -260,6 +258,10 @@ def get_categorized_recommendations(movie_id):
 
 
 if __name__ == '__main__':
+    debug_mode = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
+    host = os.getenv('FLASK_HOST', '127.0.0.1')
+    port = int(os.getenv('FLASK_PORT', '5000'))
+
     print("=" * 70)
     print("MOVIE RECOMMENDER API SERVER")
     print("=" * 70)
@@ -273,7 +275,7 @@ if __name__ == '__main__':
     print("  GET  /api/movies/<id>/cast")
     print("  GET  /api/recommendations/categorized/<id>")
     print()
-    print("Starting server on http://localhost:5000")
+    print(f"Starting server on http://{host}:{port}")
     print("=" * 70)
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=debug_mode, host=host, port=port)
