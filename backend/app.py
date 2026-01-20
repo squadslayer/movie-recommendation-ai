@@ -207,7 +207,12 @@ def get_movie_cast(movie_id):
         cast_list = []
         idx = recommender.movie_to_idx.get(movie_id)
         if idx is not None:
-            cast_string = recommender.movies_df.iloc[idx].get('cast', '')
+            row = recommender.movies_df.iloc[idx]
+            # Try 'cast' column first, fallback to 'actors'
+            cast_string = row.get('cast')
+            if not cast_string or pd.isna(cast_string) or cast_string == 'Unknown':
+                cast_string = row.get('actors', '')
+                
             if cast_string and pd.notna(cast_string) and cast_string != 'Unknown':
                 cast_list = [name.strip() for name in str(cast_string).split(',')]
         
