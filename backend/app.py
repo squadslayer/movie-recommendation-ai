@@ -35,10 +35,39 @@ try:
     with open(model_path, 'rb') as f:
         model_data = pickle.load(f)
     recommender = model_data['recommender']
-    print("✅ Model loaded successfully")
+    
+    # Check model size for optimization verification
+    size_mb = os.path.getsize(model_path) / (1024 * 1024)
+    print(f"✅ Model loaded successfully ({size_mb:.2f} MB)")
+    if size_mb < 100:
+        print("🚀 Optimized Model Detected (High Performance Mode)")
+    else:
+        print("⚠️ Warning: Large model detected. Consider retraining with optimization.")
+    
+    # Precompute title lookup for autocomplete (O(1) startup cost)
+    print("Building autocomplete index...")
+    MOVIE_TITLES = []
+    TITLE_LOOKUP = {}
+    
+    for movie_id, idx in recommender.movie_to_idx.items():
+        row = recommender.movies_df.iloc[idx]
+        title = row['title']
+        year = row.get('year', 'N/A')
+        
+        MOVIE_TITLES.append(title)
+        TITLE_LOOKUP[title] = {
+            'id': movie_id,
+            'year': year
+        }
+    
+    print(f"✅ Indexed {len(MOVIE_TITLES)} movie titles for autocomplete")
+        
 except Exception as e:
     print(f"❌ Error loading model: {e}")
     recommender = None
+    size_mb = 0
+    MOVIE_TITLES = []
+    TITLE_LOOKUP = {}
 
 # Simple in-memory cache for posters to avoid hitting rate limits
 @lru_cache(maxsize=1000)
@@ -58,12 +87,80 @@ def get_movie_poster(movie_id):
         
     return None
 
+@app.route('/', methods=['GET'])
+def index():
+    """Root endpoint"""
+    return jsonify({
+        'message': 'Movie Recommendation API is running',
+        'endpoints': {
+            'health': '/api/health',
+            'autocomplete': '/api/search/autocomplete?q=query',
+            'actor_movies': '/api/actors/<name>/movies',
+            'recommendations': '/api/recommendations/categorized/<id>'
+        },
+        'status': 'active'
+    })
+
+@app.route('/api/search/autocomplete', methods=['GET'])
+def autocomplete():
+    """
+    Autocomplete endpoint with hybrid prefix+fuzzy matching
+    
+    Query params:
+        q: Search query (min 2 characters)
+    """
+    if not recommender:
+        return jsonify({'suggestions': []}), 500
+    
+    try:
+        query = request.args.get('q', '').strip().lower()
+        
+        # Minimum query length check
+        if len(query) < 2:
+            return jsonify({'suggestions': []})
+        
+        # 1. Prefix matches (fast, deterministic)
+        prefix_matches = [
+            title for title in MOVIE_TITLES
+            if title.lower().startswith(query)
+        ][:10]
+        
+        results = prefix_matches
+        
+        # 2. Fuzzy fallback if insufficient results
+        if len(results) < 10:
+            from difflib import get_close_matches
+            fuzzy = get_close_matches(
+                query,
+                MOVIE_TITLES,
+                n=10 - len(results),
+                cutoff=0.4
+            )
+            results.extend(fuzzy)
+        
+        # 3. Format response (remove duplicates)
+        suggestions = []
+        for title in dict.fromkeys(results):
+            meta = TITLE_LOOKUP[title]
+            suggestions.append({
+                'id': meta['id'],
+                'title': title,
+                'year': meta['year']
+            })
+        
+        return jsonify({'suggestions': suggestions[:10]})
+        
+    except Exception as e:
+        print(f"Error in autocomplete: {e}")
+        return jsonify({'suggestions': []}), 500
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'model_loaded': recommender is not None
+        'model_loaded': recommender is not None,
+        'model_size_mb': round(size_mb, 2)
     })
 
 
@@ -260,6 +357,83 @@ def get_categorized_recommendations(movie_id):
         return jsonify(formatted)
         
     except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/recommendations', methods=['POST'])
+def get_recommendations_post():
+    """
+    Get recommendations based on input movies (POST)
+    Handles title-to-ID lookup.
+    """
+    if not recommender:
+        return jsonify({'error': 'Model not loaded'}), 500
+    
+    try:
+        data = request.get_json()
+        input_movies = data.get('input_movies', [])
+        limit = data.get('limit', 10)
+        
+        if not input_movies:
+            return jsonify({'error': 'No input movies provided'}), 400
+            
+        movie_input = input_movies[0]
+        
+        # 1. Resolve Title -> ID
+        movie_id = movie_input
+        # Check if input is a known ID
+        if movie_input not in recommender.movie_to_idx:
+            # Try finding by title
+            found = False
+            for mid, idx in recommender.movie_to_idx.items():
+                title = recommender.movies_df.iloc[idx]['title']
+                if str(title).lower() == str(movie_input).lower():
+                    movie_id = mid
+                    found = True
+                    break
+            
+            if not found:
+                 return jsonify({'error': f"Movie '{movie_input}' not found in database"}), 404
+
+        # 2. Get Recommendations
+        recommendations = recommender.get_categorized_recommendations(
+            movie_id, 
+            n_per_category=limit
+        )
+        
+        # 3. Format Response
+        formatted = {}
+        for category, movies in recommendations.items():
+            formatted[category] = []
+            for rec_movie_id, score in movies:
+                info = recommender.get_movie_info(rec_movie_id)
+                if info:
+                    # Enrich with poster
+                    poster = get_movie_poster(rec_movie_id)
+                    formatted[category].append({
+                        'id': rec_movie_id,
+                        'title': info['title'],
+                        'year': info.get('year'),
+                        'rating': info.get('rating'),
+                        'score': float(score),
+                        'poster_url': poster,
+                        'overview': info.get('overview', '')[:200]
+                    })
+        
+        # Add explanations
+        explanations = [
+            f"Recommendations based on '{movie_id}'",
+            f"Found {len(formatted.get('similar_content', []))} matches based on plot & features"
+        ]
+
+        return jsonify({
+            'recommendations': formatted,
+            'trace_id': 'trace_' + str(movie_id), # Mock trace ID
+            'explanations': explanations,
+            'model_version': 'v2.1'
+        })
+        
+    except Exception as e:
+        print(f"Error in recommendations: {e}")
         return jsonify({'error': str(e)}), 500
 
 

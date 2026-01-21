@@ -32,10 +32,9 @@ class EnhancedRecommender:
         self.idx_to_movie = {idx: movie_id for movie_id, idx in self.movie_to_idx.items()}
         
         # Compute similarity matrix if TF-IDF is available
-        if tfidf_matrix is not None:
-            self.similarity_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
-        else:
-            self.similarity_matrix = None
+        # OPTIMIZATION: We do NOT compute the full NxN matrix here anymore to save memory (3GB+ -> <100MB).
+        # We will calculate similarity on-the-fly using linear_kernel.
+        self.similarity_matrix = None
     
     def get_movie_info(self, movie_id: str) -> Dict:
         """Get information about a movie."""
@@ -183,23 +182,28 @@ class EnhancedRecommender:
         Returns:
             List of (movie_id, similarity_score) tuples
         """
-        if self.similarity_matrix is None:
+        if self.tfidf_matrix is None:
             return []
         
         if movie_id not in self.movie_to_idx:
             return []
         
         idx = self.movie_to_idx[movie_id]
-        similarity_scores = self.similarity_matrix[idx]
+        
+        # Calculate similarity on-the-fly for just this movie vs all others
+        # vector is 1xN, matrix is MxN -> result is 1xM cosine similarities (since vectors are normalized)
+        from sklearn.metrics.pairwise import linear_kernel
+        cosine_sim = linear_kernel(self.tfidf_matrix[idx], self.tfidf_matrix).flatten()
         
         # Get top similar movies (excluding itself)
-        similar_indices = np.argsort(similarity_scores)[::-1][1:n+1]
+        # argsort is fast enough for 20k items (~2ms)
+        similar_indices = np.argsort(cosine_sim)[::-1][1:n+1]
         
         recommendations = []
         for sim_idx in similar_indices:
             if sim_idx < len(self.idx_to_movie):
                 sim_movie_id = self.idx_to_movie[sim_idx]
-                score = similarity_scores[sim_idx]
+                score = cosine_sim[sim_idx]
                 recommendations.append((sim_movie_id, float(score)))
         
         return recommendations
@@ -292,17 +296,17 @@ class EnhancedRecommender:
             movie_info = self.get_movie_info(movie_id)
             if movie_info:
                 top_movies.append({
-                    'movie_id': movie_id,
-                    'title': movie_info['title'],
-                    'rating': rating,
-                    'year': movie_info.get('year', 'N/A'),
-                    'genre': movie_info.get('genre', 'N/A')
+                    'movie_id': str(movie_id),
+                    'title': str(movie_info['title']),
+                    'rating': float(rating),
+                    'year': str(movie_info.get('year', 'N/A')),
+                    'genre': str(movie_info.get('genre', 'N/A'))
                 })
         
         return {
             'actor_name': actor_name,
-            'total_movies': len(movies),
-            'average_rating': round(avg_rating, 2),
+            'total_movies': int(len(movies)),
+            'average_rating': float(round(avg_rating, 2)),
             'top_movies': top_movies,
-            'all_movie_ids': [movie_id for movie_id, _ in movies]
+            'all_movie_ids': [str(movie_id) for movie_id, _ in movies]
         }

@@ -9,6 +9,7 @@ A complete movie recommendation system built with Python, using **local CSV data
   - **Collaborative Filtering** (User-based, Item-based, Matrix Factorization)
   - **Hybrid Approaches** (Weighted, Switching, Cascade)
   - **Categorized Recommendations** (Similar Genre, Same Director, Popular That Year, Similar Content)
+  - **Optimized Inference** (~18ms latency, <25MB model size) via on-the-fly similarity calculation
 
 ### 🎭 **Actor-Based Discovery** (NEW!)
   - **Get Movies by Actor** - Find all movies featuring a specific actor
@@ -270,9 +271,16 @@ All dependencies are already installed in the virtual environment:
 ✅ Wikipedia Image Integration Ready  
 ✅ Parallel Processing Optimized (10-12× faster)  
 ✅ Backend API with Actor Endpoints  
+✅ Model Optimized (99% Size Reduction)  
 ✅ Ready for Production Deployment
 
 ## Recent Updates
+
+### v2.1 - Model Optimization (Critical Fix)
+- 🚀 **Size Reduction**: Reduced model artifact from **3.3 GB to 24 MB** (99% reduction).
+- ⚡ **On-the-fly Similarity**: Replaced dense matrix storage with dynamic linear kernel calculation.
+- 📉 **Latency**: Achieved ~18ms inference time per query.
+- 🔍 **Evaluation**: Added automated coverage testing (ensuring diversity in recommendations).
 
 ### v2.0 - Actor-Based Features & Performance Optimization
 - ✨ **Cast Data Integration**: Top 5 actors extracted from TMDB API

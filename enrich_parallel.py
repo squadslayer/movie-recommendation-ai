@@ -14,6 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 import logging
 from datetime import datetime
+from backend.memory import MemoryManager
 
 load_dotenv()
 
@@ -372,6 +373,18 @@ def enrich_movies(limit=None, checkpoint_interval=100):
     logger.info(f"Output: {enriched_file}")
     logger.info("="*60)
     
+    # Log to Memory
+    try:
+        memory = MemoryManager()
+        memory.log_external_api(
+            trace_id=None,
+            api_name="TMDB Enrichment",
+            status="Complete",
+            latency=time.time() - start_time
+        )
+    except Exception as e:
+        logger.warning(f"Failed to log to memory: {e}")
+
     return df
 
 

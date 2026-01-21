@@ -20,10 +20,10 @@ if __name__ == "__main__":
     print("="*50)
 
     # 1. Health Check
-    ok1 = test_endpoint("http://localhost:5000/api/health")
+    ok1 = test_endpoint("http://localhost:8000/api/health")
 
     # 2. Artist Search (Tom Cruise) - Case sensitive?
-    ok2 = test_endpoint("http://localhost:5000/api/actors/Tom%20Cruise/info")
+    ok2 = test_endpoint("http://localhost:8000/api/actors/Tom%20Cruise/info")
 
     if ok1 and ok2:
         print("\n✅ API IS WORKING CORRECTLY!")
