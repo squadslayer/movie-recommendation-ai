@@ -24,7 +24,12 @@ def main():
         return
 
     recommender = loaded_model['recommender']
-    movies_df = loaded_model['movies_df']
+    
+    # Handle optimized model structure where movies_df is inside recommender
+    if 'movies_df' in loaded_model:
+        movies_df = loaded_model['movies_df']
+    else:
+        movies_df = recommender.movies_df
     
     # Create a case-insensitive title mapping
     # Map lowercase title to movie_id
