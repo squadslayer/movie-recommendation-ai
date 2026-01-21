@@ -100,13 +100,13 @@ SELECT cron.schedule(
 
 ## Troubleshooting
 
-**Error: "relation already exists"**
+### Error: "relation already exists"
 - Safe to ignore if using `DROP ... IF EXISTS`
 
-**Error: "column already exists"**
+### Error: "column already exists"
 - Migration uses `IF NOT EXISTS` - safe to rerun
 
-**Error: "function does not exist"**
+### Error: "function does not exist"
 - Run `01_schema.sql` first
 
 ---

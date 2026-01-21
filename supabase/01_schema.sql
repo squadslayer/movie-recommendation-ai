@@ -271,7 +271,7 @@ COMMENT ON VIEW recent_watchlist_activity IS 'Recent watchlist activity (last 7 
 -- Next step: Run 02_rls_policies.sql to secure your data
 -- 
 -- Performance notes:
--- - All FKs are indexed automatically
+-- - FK columns are explicitly indexed above for JOIN/lookup performance
 -- - Partial indexes reduce index size by 30-50%
 -- - GIN indexes enable fast array searches
 -- - Materialized view MUST be refreshed manually/via cron

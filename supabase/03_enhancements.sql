@@ -59,9 +59,22 @@ BEGIN
   END IF;
 END $$;
 
--- Add case-insensitive username index
-DROP INDEX IF EXISTS idx_profiles_username_lower;
-CREATE UNIQUE INDEX idx_profiles_username_lower ON profiles(LOWER(username));
+-- Add case-insensitive username index (with pre-check for duplicates)
+DO $$
+BEGIN
+  -- Check for case-insensitive duplicates before creating index
+  IF EXISTS (
+    SELECT LOWER(username), COUNT(*)
+    FROM profiles
+    GROUP BY LOWER(username)
+    HAVING COUNT(*) > 1
+  ) THEN
+    RAISE WARNING 'Case-insensitive duplicate usernames found. Please resolve before creating unique index.';
+  ELSE
+    DROP INDEX IF EXISTS idx_profiles_username_lower;
+    CREATE UNIQUE INDEX idx_profiles_username_lower ON profiles(LOWER(username));
+  END IF;
+END $$;
 
 -- =========================================================================
 -- WATCHLIST ENHANCEMENTS
@@ -179,8 +192,7 @@ CREATE INDEX idx_preferences_preferred_languages ON preferences USING GIN(prefer
 -- =========================================================================
 -- UPDATE TRIGGER FUNCTION
 -- =========================================================================
--- Replace existing function with better error handling
-
+-- Function: Auto-create profile & preferences on signup
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -203,7 +215,8 @@ BEGIN
   
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp;
 
 -- =========================================================================
 -- NEW HELPER FUNCTIONS
@@ -213,7 +226,8 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION get_watchlist_count(uid UUID)
 RETURNS INTEGER AS $$
   SELECT COUNT(*)::INTEGER FROM watchlist WHERE user_id = uid;
-$$ LANGUAGE SQL STABLE SECURITY DEFINER;
+$$ LANGUAGE SQL STABLE SECURITY DEFINER
+SET search_path = public, pg_temp;
 
 COMMENT ON FUNCTION get_watchlist_count IS 'Returns total watchlist items for a user';
 
