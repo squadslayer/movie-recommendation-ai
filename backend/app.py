@@ -47,18 +47,26 @@ try:
     # Precompute title lookup for autocomplete (O(1) startup cost)
     print("Building autocomplete index...")
     MOVIE_TITLES = []
-    TITLE_LOOKUP = {}
+    TITLE_LOOKUP = {}  # Maps normalized title -> list of candidates
     
     for movie_id, idx in recommender.movie_to_idx.items():
         row = recommender.movies_df.iloc[idx]
         title = row['title']
         year = row.get('year', 'N/A')
         
-        MOVIE_TITLES.append(title)
-        TITLE_LOOKUP[title] = {
+        # Store unique titles for autocomplete
+        if title not in MOVIE_TITLES:
+            MOVIE_TITLES.append(title)
+        
+        # Store all candidates for each title (handle duplicates)
+        if title not in TITLE_LOOKUP:
+            TITLE_LOOKUP[title] = []
+        
+        TITLE_LOOKUP[title].append({
             'id': movie_id,
-            'year': year
-        }
+            'year': year,
+            'title': title
+        })
     
     print(f"✅ Indexed {len(MOVIE_TITLES)} movie titles for autocomplete")
         
@@ -96,7 +104,8 @@ def index():
             'health': '/api/health',
             'autocomplete': '/api/search/autocomplete?q=query',
             'actor_movies': '/api/actors/<name>/movies',
-            'recommendations': '/api/recommendations/categorized/<id>'
+            'recommendations_get': '/api/recommendations/categorized/<id>',
+            'recommendations_post': 'POST /api/recommendations (JSON: {"input_movies": ["title_or_id"], "limit": 10})'
         },
         'status': 'active'
     })
@@ -138,15 +147,21 @@ def autocomplete():
             )
             results.extend(fuzzy)
         
-        # 3. Format response (remove duplicates)
+        # 3. Format response (remove duplicates, handle multiple candidates per title)
         suggestions = []
-        for title in dict.fromkeys(results):
-            meta = TITLE_LOOKUP[title]
-            suggestions.append({
-                'id': meta['id'],
-                'title': title,
-                'year': meta['year']
-            })
+        seen_ids = set()
+        
+        for title in dict.fromkeys(results):  # remove duplicates
+            candidates = TITLE_LOOKUP[title]
+            # Add all candidates for this title (handles remakes/duplicates)
+            for meta in candidates:
+                if meta['id'] not in seen_ids:
+                    suggestions.append({
+                        'id': meta['id'],
+                        'title': meta['title'],
+                        'year': meta['year']
+                    })
+                    seen_ids.add(meta['id'])
         
         return jsonify({'suggestions': suggestions[:10]})
         
@@ -370,6 +385,11 @@ def get_recommendations_post():
     
     try:
         data = request.get_json()
+        
+        # Validate JSON payload
+        if data is None or not isinstance(data, dict):
+            return jsonify({'error': 'Missing or invalid JSON body'}), 400
+        
         input_movies = data.get('input_movies', [])
         limit = data.get('limit', 10)
         

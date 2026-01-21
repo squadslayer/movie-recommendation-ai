@@ -15,10 +15,13 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS
+# CORS - Security: don't use allow_origins=["*"] with allow_credentials=True
+# Read allowed origins from environment or use secure defaults
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',')
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,  # Specific origins, not wildcard
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

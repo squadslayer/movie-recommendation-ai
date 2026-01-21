@@ -1,14 +1,17 @@
-# FastAPI Backend - Quick Start
+# FastAPI Backend# FastAPI Quick Start
 
-## Start the Server
+## Running the FastAPI Backend
 
-```powershell
-# Navigate to project directory
-cd c:\Users\Krishna Sharma\OneDrive\Desktop\movie-recommender
+1.  **Navigate to project directory:**
+    ```bash
+    cd path/to/movie-recommender
+    ```
 
-# Start FastAPI server (port 8000)
-python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
-```
+2.  **Run the server:**
+    ```bash
+    # Start FastAPI server (port 8000)
+    python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+    ```
 
 ## Test Endpoints
 

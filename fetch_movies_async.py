@@ -167,10 +167,16 @@ class AsyncMovieFetcher:
                 with open(STATE_FILE, 'r') as f:
                     state = json.load(f)
                     self.last_page = state.get('last_page', 0)
-                    logger.info(f"📍 Resuming from page {self.last_page + 1}")
-            except:
+                    logger.info(f"Resumed from page {self.last_page}")
+            except FileNotFoundError:
+                logger.info("No previous state found, starting from page 1")
                 self.last_page = 0
-                
+            except json.JSONDecodeError as e:
+                logger.error(f"Error decoding state file: {e}. Starting fresh.")
+                self.last_page = 0
+            except OSError as e:
+                logger.error(f"Error reading state file: {e}. Starting fresh.")
+                self.last_page = 0  
     def save_state(self, page):
         """Save current page to state file"""
         os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)

@@ -26,19 +26,25 @@ async def get_recommendations(
     
     try:
         # 2. Run Inference
-        start_time = time.time()
-        result = controller.predict(req.input_movies, limit=req.limit)
-        latency = time.time() - start_time
+        # Get predictions
+        result = controller.predict(
+            input_movies=req.input_movies,
+            limit=req.limit
+        )
         
-        # 3. Log Prediction
+        # Check for error in result
+        if "error" in result:
+            raise HTTPException(status_code=404, detail=result["error"])
+        
+        # Log prediction
         memory.log_prediction(trace_id, result)
         
-        # 4. Return Response
+        # Return response
         return PredictionResponse(
             trace_id=trace_id,
             model_version=result["model_version"],
             recommendations=result["recommendations"],
-            explanations=result["explanations"]
+            explanations=result.get("explanations", {})
         )
         
     except Exception as e:

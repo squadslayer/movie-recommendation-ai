@@ -76,6 +76,10 @@ class InferenceController:
         if not self.recommender:
             raise RuntimeError("Model not loaded")
 
+        # Validate input
+        if not input_movies:
+            raise HTTPException(status_code=400, detail="input_movies cannot be empty")
+        
         # For this demo, we assume single movie input for categorized recommendations
         # In a real scenario, we'd handle multiple inputs more gracefully
         movie_input = input_movies[0]
@@ -106,11 +110,16 @@ class InferenceController:
                     # Enrich with poster
                     poster = self._get_poster_url(rec_mid)
                     
+                    # Safely convert rating (handle 'N/A' and non-numeric values)
+                    raw_rating = info.get('rating', 0)
+                    rating = pd.to_numeric(raw_rating, errors='coerce')
+                    rating = 0 if pd.isna(rating) else float(rating)
+                    
                     formatted_recs[category].append({
                         "id": str(rec_mid),
                         "title": info['title'],
                         "year": str(info.get('year', 'N/A')),
-                        "rating": float(info.get('rating', 0) if pd.notna(info.get('rating')) else 0),
+                        "rating": rating,
                         "genre": info.get('genre', 'N/A'),
                         "director": info.get('director', 'N/A'),
                         "score": float(score),

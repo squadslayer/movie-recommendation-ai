@@ -183,8 +183,8 @@ python backend/app.py
 ## 📚 Auto-Generated API Documentation
 
 FastAPI automatically generates interactive docs:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+- [Swagger UI](http://localhost:8000/docs)
+- [ReDoc](http://localhost:8000/redoc)
 
 ## 🐛 Known Issues & Fixes
 

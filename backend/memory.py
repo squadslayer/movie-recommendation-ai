@@ -2,6 +2,7 @@ import json
 import uuid
 import time
 import os
+import threading
 from typing import Dict, Any, List, Optional
 from datetime import datetime
 
@@ -14,14 +15,18 @@ class MemoryManager:
     
     def __init__(self, storage_path: str = "data/memory_log.jsonl"):
         self.storage_path = storage_path
+        self._write_lock = threading.Lock()  # Prevent concurrent write corruption
         self._ensure_storage_exists()
         
     def _ensure_storage_exists(self):
         """Ensure the storage directory and file exist."""
-        os.makedirs(os.path.dirname(self.storage_path), exist_ok=True)
+        directory = os.path.dirname(self.storage_path)
+        if directory:  # Only create directory if path is not empty
+            os.makedirs(directory, exist_ok=True)
+        
         if not os.path.exists(self.storage_path):
-            with open(self.storage_path, 'w') as f:
-                pass  # Create empty file
+            # Touch-style create without leaving open handle
+            open(self.storage_path, 'a').close()
 
     def start_trace(self, request_data: Dict[str, Any]) -> str:
         """
@@ -112,6 +117,7 @@ class MemoryManager:
         return trace_context
 
     def _append_log(self, entry: Dict[str, Any]):
-        """Append a log entry to the JSONL file."""
-        with open(self.storage_path, 'a') as f:
-            f.write(json.dumps(entry) + "\n")
+        """Append a log entry to the JSONL file (thread-safe)."""
+        with self._write_lock:  # Prevent concurrent writes
+            with open(self.storage_path, 'a') as f:
+                f.write(json.dumps(entry) + "\n")

@@ -97,5 +97,8 @@ async def get_actor_wikipedia_info(
             }
             
         return wiki_info
+    except HTTPException:
+        # Re-raise HTTP exceptions (like 404) without converting to 500
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
