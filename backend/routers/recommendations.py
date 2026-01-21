@@ -47,6 +47,9 @@ async def get_recommendations(
             explanations=result.get("explanations", {})
         )
         
+    except HTTPException:
+        # Re-raise HTTPException to preserve client status codes (e.g., 404)
+        raise
     except Exception as e:
         # Log error in future
         raise HTTPException(status_code=500, detail=str(e))

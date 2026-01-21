@@ -51,7 +51,7 @@ def check_page(page, vote_count=5, vote_average=3.0):
             print(f"❌ Error: {response.status_code}")
             return 0, 0
     except requests.Timeout:
-        print(f"❌ Request timed out (>5s)")
+        print("❌ Request timed out (>5s)")
         return 0, 0
     except requests.RequestException as e:
         print(f"❌ Request error: {e}")

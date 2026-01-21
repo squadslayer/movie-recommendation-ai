@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 from typing import Dict, List, Any
 from functools import lru_cache
+from fastapi import HTTPException
 import requests
 
 # Add parent directory to path to import src

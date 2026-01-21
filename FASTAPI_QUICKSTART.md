@@ -1,4 +1,4 @@
-# FastAPI Backend# FastAPI Quick Start
+# FastAPI Quick Start
 
 ## Running the FastAPI Backend
 
@@ -34,8 +34,8 @@ curl http://localhost:8000/api/actors/Tom%20Cruise/info
 ## Interactive API Docs
 
 Open in browser:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- Swagger UI: <http://localhost:8000/docs>
+- ReDoc: <http://localhost:8000/redoc>
 
 ## Memory Log Location
 
