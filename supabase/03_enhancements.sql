@@ -69,7 +69,7 @@ BEGIN
     GROUP BY LOWER(username)
     HAVING COUNT(*) > 1
   ) THEN
-    RAISE WARNING 'Case-insensitive duplicate usernames found. Please resolve before creating unique index.';
+    RAISE EXCEPTION 'Case-insensitive duplicate usernames found. Please resolve before creating unique index.';
   ELSE
     DROP INDEX IF EXISTS idx_profiles_username_lower;
     CREATE UNIQUE INDEX idx_profiles_username_lower ON profiles(LOWER(username));

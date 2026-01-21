@@ -211,7 +211,8 @@ BEGIN
   
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
@@ -222,7 +223,8 @@ CREATE TRIGGER on_auth_user_created
 CREATE OR REPLACE FUNCTION get_watchlist_count(uid UUID)
 RETURNS INTEGER AS $$
   SELECT COUNT(*)::INTEGER FROM watchlist WHERE user_id = uid;
-$$ LANGUAGE SQL STABLE SECURITY DEFINER;
+$$ LANGUAGE SQL STABLE SECURITY DEFINER
+SET search_path = public, pg_temp;
 
 COMMENT ON FUNCTION get_watchlist_count IS 'Helper function for dashboard stats';
 
