@@ -44,6 +44,9 @@ CREATE TRIGGER profiles_updated_at
 CREATE OR REPLACE FUNCTION public.handle_new_user_profile()
 RETURNS TRIGGER AS $$
 BEGIN
+    -- Fix: Lock search_path to prevent hijacking
+    PERFORM set_config('search_path', 'public, pg_temp', true);
+
     INSERT INTO public.profiles (id, username, avatar_url, onboarding_completed, display_name)
     VALUES (
         NEW.id,

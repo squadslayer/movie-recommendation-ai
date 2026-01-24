@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS public.watchlist (
 CREATE OR REPLACE FUNCTION public.handle_new_user_prefs()
 RETURNS TRIGGER AS $$
 BEGIN
+    PERFORM set_config('search_path', 'public, pg_temp', true);
     INSERT INTO public.preferences (user_id) VALUES (NEW.id);
     RETURN NEW;
 END;

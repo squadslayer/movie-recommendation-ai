@@ -92,7 +92,7 @@ This implementation plan completes the authentication and onboarding flow by imp
     - **Validates: Requirements 5.3**
 
 - [ ] 6. Implement personalized content sections
-  - Create personalization service in JavaScript to organize movies by user preferences
+  - Create personalization service in JavaScript to organize movies by user-preferences
   - Implement "Popular in [Languages]" section based on user preferred languages
   - Implement "Recommended [Genres]" section based on user favorite genres
   - Integrate with existing user_preferences JSONB data from Python backend

@@ -47,7 +47,7 @@ This specification defines the completion of the Authentication & Onboarding Flo
 
 #### Acceptance Criteria
 
-1. WHEN a user clicks on a movie card, THE Interaction_Logger SHALL record the event to the user_interaction_event table
+1. WHEN a user clicks on a movie card, THE Interaction_Logger SHALL record the event to the activity_log table
 2. WHEN a user completes the onboarding process, THE Interaction_Logger SHALL log the onboarding completion event
 3. WHEN logging interactions, THE Interaction_Logger SHALL capture user ID, movie ID, interaction type, and timestamp
 4. WHEN interaction logging fails, THE Interaction_Logger SHALL handle errors gracefully without disrupting user experience

@@ -51,8 +51,7 @@ CREATE POLICY "Users can view own activity"
 CREATE POLICY "Users can insert own activity" 
   ON activity_log FOR INSERT WITH CHECK (auth.uid() = user_id);
   
-CREATE POLICY "Allow anonymous activity logging" 
-  ON activity_log FOR INSERT WITH CHECK (user_id IS NULL);
+
 
 
 -- ============================================================
@@ -84,15 +83,17 @@ CREATE INDEX IF NOT EXISTS idx_activity_session ON activity_log(session_id) WHER
 -- Materialized View for User Features (ML)
 CREATE MATERIALIZED VIEW IF NOT EXISTS user_features AS
 SELECT 
-  user_id,
-  ARRAY_AGG(DISTINCT favorite_genres) FILTER (WHERE favorite_genres IS NOT NULL) AS favorite_genres,
-  COUNT(*) FILTER (WHERE action = 'view') AS view_count,
-  COUNT(*) FILTER (WHERE action = 'add_watchlist') AS save_count,
-  COUNT(*) FILTER (WHERE action = 'search') AS search_count,
-  MAX(created_at) AS last_active_at
-FROM activity_log
-WHERE user_id IS NOT NULL
-GROUP BY user_id;
+  al.user_id,
+  ARRAY_AGG(DISTINCT g) FILTER (WHERE g IS NOT NULL) AS favorite_genres,
+  COUNT(*) FILTER (WHERE al.action = 'view') AS view_count,
+  COUNT(*) FILTER (WHERE al.action = 'add_watchlist') AS save_count,
+  COUNT(*) FILTER (WHERE al.action = 'search') AS search_count,
+  MAX(al.created_at) AS last_active_at
+FROM activity_log al
+LEFT JOIN preferences p ON al.user_id = p.user_id
+LEFT JOIN LATERAL UNNEST(p.favorite_genres) AS g ON TRUE
+WHERE al.user_id IS NOT NULL
+GROUP BY al.user_id;
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_user_features_user_id ON user_features(user_id);
 

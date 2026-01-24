@@ -15,7 +15,7 @@ SET search_path = public, pg_temp -- Security best practice
 AS $$
 BEGIN
   -- Validate input length (defensive programming)
-  IF char_length(username_input) < 3 OR char_length(username_input) > 30 THEN
+  IF username_input IS NULL OR char_length(username_input) < 3 OR char_length(username_input) > 30 THEN
     RETURN FALSE;
   END IF;
 
@@ -53,7 +53,7 @@ DECLARE
   result JSONB;
 BEGIN
   -- Verify the requester is asking for their own profile OR is service role
-  IF auth.uid() != user_id_input AND current_user != 'service_role' THEN
+  IF auth.uid() != user_id_input AND auth.role() != 'service_role' THEN
     RAISE EXCEPTION 'Access Denied';
   END IF;
 
@@ -65,4 +65,6 @@ BEGIN
 END;
 $$;
 
+REVOKE EXECUTE ON FUNCTION get_user_profile(UUID) FROM public;
+GRANT EXECUTE ON FUNCTION get_user_profile(UUID) TO service_role;
 GRANT EXECUTE ON FUNCTION get_user_profile(UUID) TO authenticated;

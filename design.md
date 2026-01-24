@@ -211,9 +211,7 @@ interface UserProfile {
 
 Now I need to use the prework tool to analyze the acceptance criteria before writing the Correctness Properties section:
 
-<function_calls>
-<invoke name="prework">
-<parameter name="featureName">auth-flow-completion
+Run prework to analyze the acceptance criteria for auth-flow-completion.
 
 ## Correctness Properties
 
